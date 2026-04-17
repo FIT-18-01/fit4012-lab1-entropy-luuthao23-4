@@ -39,7 +39,7 @@ if 'TODO(student)' in modinv_code:
 
 if 'return -1.0;' in entropy_code:
     errors.append('calculate_redundancy() chua duoc hoan thien.')
-if re.search(r'int\s+mod_inverse\s*\([^)]*\)\s*\{[^}]*return\s+-1\s*;', modinv_code, flags=re.DOTALL):
+if re.search(r'int\s+mod_inverse\s*\([^)]*\)\s*\{\s*return\s+-1\s*;\s*\}', modinv_code, flags=re.DOTALL):
     errors.append('mod_inverse() chua duoc hoan thien.')
 
 checked_tests = len(re.findall(r'^-\s*\[[xX]\]', tests, flags=re.MULTILINE))
@@ -73,8 +73,8 @@ for source, out in compile_targets:
             capture_output=True,
             text=True,
         )
-    except subprocess.CalledProcessError as exc:
-        errors.append(f'Khong bien dich duoc {source}: {exc.stderr.strip()}')
+    except Exception as exc:
+        errors.append(f'Khong bien dich duoc {source}: {exc}')
 
 try:
     commit_count = int(subprocess.check_output(['git', 'rev-list', '--count', 'HEAD'], text=True).strip())
